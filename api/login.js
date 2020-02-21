@@ -6,7 +6,7 @@ module.exports = (req, res) => {
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URL,
     response_type: 'code',
-    scope: 'user-read-private user-read-email'
+    scope: 'streaming user-read-email user-read-private'
   });
   res.writeHead(301, { Location: `https://accounts.spotify.com/authorize?${qs}` });
   res.end();
