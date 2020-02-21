@@ -2,10 +2,9 @@
   "name": "mute-spotify-ads",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "now",
-    "build": ""
+    "deploy": "now",
+    "start": "now dev"
   },
   "author": "",
   "license": "ISC",
