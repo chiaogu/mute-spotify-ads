@@ -1,91 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-<head>
-  <title>Mute Spotify Ads</title>
-</head>
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-<body>
-  <div id="app">
-    <p>{{ trackName }}</p>
-  </div>
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-  <script src="https://sdk.scdn.co/spotify-player.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-  <script>
-    (async () => {
-      const queryString = new URLSearchParams(location.search);
-      const refreshToken = queryString.get('refresh_token');
-      if(!refreshToken) return window.location.href = 'https://mute-spotify-ads.chiaogu.now.sh/api/login';
-
-      function getTrackInfo(state, key) {
-        const { track_window: { current_track: currentTrack = {} } = {} } = (state || {});
-        return currentTrack[key];
-      }
-
-      const vm = new Vue({
-        el: '#app',
-        data: {
-          volume: undefined,
-          playerState: null
-        },
-        computed: {
-          isCurrentTrackAd() {
-            return getTrackInfo(this.playerState, 'type') === 'ad'
-          },
-          trackName() {
-            return getTrackInfo(this.playerState, 'name');
-          },
-        }
-      });
-
-      async function onTrackTypeChange(type) {
-        if(type === 'ad') {
-          vm.volume = await player.getVolume();
-          await player.setVolume(0);
-          console.log('Muted!');
-        } else {
-          await player.setVolume(vm.volume);
-          console.log('Unmuted!');
-        }
-      }
-
-      async function onPlayerStateChange(state) {
-        const previousType = getTrackInfo(vm.playerState, 'type');
-        const currentType = getTrackInfo(state, 'type');
-        vm.playerState = state;
-        if(previousType !== currentType) onTrackTypeChange(currentType);
-      }
-
-      await new Promise(resolve => window.onSpotifyWebPlaybackSDKReady = resolve);
-      const player = new Spotify.Player({
-        name: 'Mute Ads',
-        getOAuthToken: async callback => {
-          const refreshTokenUrl = `https://mute-spotify-ads.chiaogu.now.sh/api/refresh-token?refresh_token=${refreshToken}`;
-          const { access_token } = await (await fetch(refreshTokenUrl)).json();
-          callback(access_token);
-        }
-      });
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
-      player.addListener('player_state_changed', onPlayerStateChange);
-
-      // Ready
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      // Not Ready
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-
-      // Connect to the player!
-      player.connect();
-    })();
-  </script>
-</body>
-
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>
