@@ -1,7 +1,7 @@
 const util = require('util');
 const qs = require('querystring');
 const post =  util.promisify(require('request').post);
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = require('./constants');
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = require('./_constants');
 
 module.exports = async (req, res) => {
   const { body: { access_token, refresh_token } } = await post({

@@ -1,6 +1,6 @@
 const util = require('util');
 const post =  util.promisify(require('request').post);
-const { CLIENT_ID, CLIENT_SECRET } = require('./constants');
+const { CLIENT_ID, CLIENT_SECRET } = require('./_constants');
 
 module.exports = async (req, res) => {
   const authOptions = {

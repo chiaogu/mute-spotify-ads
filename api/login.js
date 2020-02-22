@@ -1,5 +1,5 @@
 const querystring = require('querystring');
-const { CLIENT_ID, REDIRECT_URL } = require('./constants');
+const { CLIENT_ID, REDIRECT_URL } = require('./_constants');
 
 module.exports = (req, res) => {
   const qs = querystring.stringify({
