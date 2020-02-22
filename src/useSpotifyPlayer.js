@@ -3,6 +3,12 @@ import getTrackInfo from './getTrackInfo';
 
 const PLAYER_NAME = 'Mute Ads';
 
+function insertSdkToBody() {
+  const script = document.createElement('script');
+  script.setAttribute('src', 'https://sdk.scdn.co/spotify-player.js');
+  document.body.appendChild(script);
+}
+
 async function getOAuthToken(callback) {
   const queryString = new URLSearchParams(window.location.search);
   const refreshToken = queryString.get('refresh_token');
@@ -13,6 +19,7 @@ async function getOAuthToken(callback) {
 }
 
 async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
+  insertSdkToBody();
   await new Promise(resolve => window.onSpotifyWebPlaybackSDKReady = resolve);
   const player = new window.Spotify.Player({ name: PLAYER_NAME, getOAuthToken });
   player.addListener('initialization_error', onPlayerError);

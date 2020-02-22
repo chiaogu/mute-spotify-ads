@@ -7,8 +7,7 @@
   "scripts": {
     "deploy": "now",
     "start": "now dev",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "build": "react-scripts build"
   },
   "dependencies": {
     "request": "^2.88.2",
