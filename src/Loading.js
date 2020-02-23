@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <Layout
       color='#63CB6B'
-      progress={1}
+      progress={-1}
     >
     </Layout>
   )

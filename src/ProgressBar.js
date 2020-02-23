@@ -1,18 +1,20 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default function ProgressBar({ progress, color }){
-  return <Root color={color} percentage={1}/>;
+  return <Root color={color} percentage={progress}/>;
 }
 
-const loading = keyframes`
-  0% {
-    transform: scaleX(0) translateX(0);
+const loading = css`
+  @keyframes loading {
+    0% {
+      transform: scaleX(0) translateX(0);
+    }
+    100% {
+      transform: scaleX(2) translateX(50%);
+    }
   }
-  100% {
-    transform: scaleX(2) translateX(50%);
-  }
-`;
+`
 
 const Root = styled.div`
   position: relative;
@@ -30,10 +32,14 @@ const Root = styled.div`
     left: 0;
     height: 100%;
     width: 100%;
-    animation: ${loading} 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
     transform-origin: 0 0;
     ${({percentage, color}) => `
-      transform: scaleX(${percentage});
+      ${percentage > 0 ? `
+        transform: scaleX(${percentage});
+      ` : `
+        ${loading}
+        animation: loading 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
+      `}
       background-color: ${color};
     `};
   }
