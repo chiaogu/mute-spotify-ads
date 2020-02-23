@@ -12,7 +12,7 @@ function insertSdkToBody() {
 async function getOAuthToken(callback) {
   const queryString = new URLSearchParams(window.location.search);
   const refreshToken = queryString.get('refresh_token');
-  if(!refreshToken) return window.location.href = '/api/login';
+  // if(!refreshToken) return window.location.href = '/api/login';
   const refreshTokenUrl = `/api/refresh-token?refresh_token=${refreshToken}`;
   const { access_token } = await (await fetch(refreshTokenUrl)).json();
   callback(access_token);
