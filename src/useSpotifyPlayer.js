@@ -9,18 +9,10 @@ function insertSdkToBody() {
   document.body.appendChild(script);
 }
 
-async function getOAuthToken(callback) {
-  const queryString = new URLSearchParams(window.location.search);
-  const refreshToken = queryString.get('refresh_token');
-  // if(!refreshToken) return window.location.href = '/api/login';
-  const refreshTokenUrl = `/api/refresh-token?refresh_token=${refreshToken}`;
-  const { access_token } = await (await fetch(refreshTokenUrl)).json();
-  callback(access_token);
-}
-
 async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
   insertSdkToBody();
   await new Promise(resolve => window.onSpotifyWebPlaybackSDKReady = resolve);
+
   const player = new window.Spotify.Player({ name: PLAYER_NAME, getOAuthToken });
   player.addListener('initialization_error', onPlayerError);
   player.addListener('authentication_error', onPlayerError);
@@ -34,14 +26,25 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
   let previousType;
   let volume = await player.getVolume();
 
+  async function getOAuthToken(callback) {
+    const queryString = new URLSearchParams(window.location.search);
+    const refreshToken = queryString.get('refresh_token');
+    if(!refreshToken) return window.location.href = '/api/login';
+    const refreshTokenUrl = `/api/refresh-token?refresh_token=${refreshToken}`;
+    try {
+      const { access_token } = await (await fetch(refreshTokenUrl)).json();
+      callback(access_token);
+    } catch(error) {
+      onError(error.message);
+    }
+  }
+
   async function onTrackTypeChange(type) {
     if(type === 'ad') {
       volume = await player.getVolume();
       await player.setVolume(0);
-      console.log('Muted!');
     } else {
       await player.setVolume(volume);
-      console.log('Unmuted!', volume);
     }
   }
 

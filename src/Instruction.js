@@ -10,8 +10,6 @@ export default function Instruction() {
       <Layout
         title='Waiting for connection'
         subtitle='Select "Mute Ads" from the device list on the bottom right of your Spotify client'
-        progress={1}
-        color='#63CB6B'
       >
         <Video loop autoPlay muted>
           <source src={instructionVideo} type="video/mp4"/>

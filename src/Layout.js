@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProgressBar from './ProgressBar';
 
 export default function Layout({ title, subtitle, progress, color, children }) {
   return (
@@ -8,8 +7,6 @@ export default function Layout({ title, subtitle, progress, color, children }) {
       {children}
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
-      <div style={{ flex: '1 1 auto' }}></div>
-      {progress && <ProgressBar {...{ progress, color }}/>}
     </Root>
   )
 };
