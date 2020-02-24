@@ -26,9 +26,10 @@ function useLoadingProps({ errorMessage, playerState }) {
 }
 
 function usePlayingProps(playerState) {
-  const { duration = 1 } = (playerState || {}) ;
+  const { paused, duration = 1 } = (playerState || {}) ;
   const { type } = getTrackInfo(playerState);
   const [currentPosition, setCurrentPosition] = useState(0);
+  const intervalDuration = paused ? null : currentPosition > 0 ? PLAYING_INTERVAL : 50;
 
   useEffect(() => {
     setCurrentPosition((playerState || {}).position || 0);
@@ -36,7 +37,7 @@ function usePlayingProps(playerState) {
 
   useInterval(() => {
     setCurrentPosition(Math.min(currentPosition + PLAYING_INTERVAL, duration));
-  }, currentPosition > 0 ? PLAYING_INTERVAL : 50);
+  }, intervalDuration);
 
   return {
     scale: currentPosition / duration,
