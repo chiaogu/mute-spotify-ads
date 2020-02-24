@@ -31,6 +31,7 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
   player.connect();
 
   let previousTrackId;
+  let previousTrackType;
   let volume = await player.getVolume();
 
   async function getOAuthToken(callback) {
@@ -48,19 +49,19 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
 
   async function onTrackChange({ name, type }) {
     if(type === 'ad') {
-      volume = await player.getVolume();
+      if(previousTrackType !== type) volume = await player.getVolume();
       await player.setVolume(0);
       changeMeta('favicon-block.ico', name);
     } else {
       await player.setVolume(volume);
       changeMeta('favicon.ico', name);
     }
+    previousTrackType = type;
   }
 
   function onPlayerStateChange(state) {
     onStateChange(state);
     const currentTrack = getTrackInfo(state);
-    console.log('onPlayerStateChange', currentTrack);
     if(previousTrackId !== currentTrack.id) onTrackChange(currentTrack);
     previousTrackId = currentTrack.id;
   }
