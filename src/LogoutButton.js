@@ -3,7 +3,14 @@ import styled from 'styled-components';
 import { ReactComponent as PowerIcon } from './assets/icon-power.svg';
 
 export default function LogoutButton() {
-  return <Root/>
+  return <Root onClick={() => {
+    const url = 'https://www.spotify.com/logout/'
+    const spotifyLogoutWindow = window.open(url);
+    setTimeout(() => {
+      spotifyLogoutWindow.close();
+      window.location.href = '/';
+    }, 1000);
+  }}/>
 }
 
 const Root = styled(PowerIcon)`

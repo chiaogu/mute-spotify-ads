@@ -3,6 +3,13 @@ import getTrackInfo from './getTrackInfo';
 
 const PLAYER_NAME = 'Mute Ads';
 
+function changeMeta(icon, name) {
+  const link = document.querySelector("link[rel*='icon']");
+  link.type = 'image/x-icon';
+  link.href = `${process.env.PUBLIC_URL}/${icon}`;
+  document.title = name;
+}
+
 function insertSdkToBody() {
   const script = document.createElement('script');
   script.setAttribute('src', 'https://sdk.scdn.co/spotify-player.js');
@@ -23,7 +30,7 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
   player.addListener('player_state_changed', onPlayerStateChange);
   player.connect();
 
-  let previousType;
+  let previousTrackId;
   let volume = await player.getVolume();
 
   async function getOAuthToken(callback) {
@@ -39,20 +46,23 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
     }
   }
 
-  async function onTrackTypeChange(type) {
+  async function onTrackChange({ name, type }) {
     if(type === 'ad') {
       volume = await player.getVolume();
       await player.setVolume(0);
+      changeMeta('favicon-block.ico', name);
     } else {
       await player.setVolume(volume);
+      changeMeta('favicon.ico', name);
     }
   }
 
   function onPlayerStateChange(state) {
     onStateChange(state);
-    const currentType = getTrackInfo(state).type;
-    if(previousType !== currentType) onTrackTypeChange(currentType);
-    previousType = currentType;
+    const currentTrack = getTrackInfo(state);
+    console.log('onPlayerStateChange', currentTrack);
+    if(previousTrackId !== currentTrack.id) onTrackChange(currentTrack);
+    previousTrackId = currentTrack.id;
   }
 
   function onPlayerError({ message }) {
