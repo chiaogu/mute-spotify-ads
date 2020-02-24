@@ -7,7 +7,7 @@ const PLAYING_INTERVAL = 1000;
 const LOADING_TRANSITION_DURATION = 1500;
 const LOADING_TRANSITION = `transform ${LOADING_TRANSITION_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1)`;
 const STATIC_TRANSITION = `transform 800ms cubic-bezier(0.075, 0.82, 0.165, 1)`;
-const PLAYING_TRANSITION = `transform 1000ms linear`;
+const PLAYING_TRANSITION = ``;
 
 function useLoadingProps({ errorMessage, playerState }) {
   const isLoading = !errorMessage && !playerState;
