@@ -23,6 +23,7 @@ const Title = styled.h2`
   font-size: 16px;
   font-family: 'Ubuntu Mono';
   font-weight: 100;
+  letter-spacing: 0.03rem;
   color: #ffffff;
 `;
 
@@ -31,6 +32,7 @@ const Subtitle = styled.h3`
   font-size: 14px;
   font-family: 'Ubuntu Mono';
   font-weight: 100;
+  letter-spacing: 0.03rem;
   line-height: 1.2;
   color: rgba(255,255,255,0.5);
 `;

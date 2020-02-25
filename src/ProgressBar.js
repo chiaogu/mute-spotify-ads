@@ -7,7 +7,7 @@ const PLAYING_INTERVAL = 1000;
 const LOADING_TRANSITION_DURATION = 1500;
 const LOADING_TRANSITION = `transform ${LOADING_TRANSITION_DURATION}ms cubic-bezier(0.77, 0, 0.175, 1)`;
 const STATIC_TRANSITION = `transform 800ms cubic-bezier(0.075, 0.82, 0.165, 1)`;
-const PLAYING_TRANSITION = `transform 1000ms linear`;
+const PLAYING_TRANSITION = ``;
 
 function useLoadingProps({ errorMessage, playerState }) {
   const isLoading = !errorMessage && !playerState;
@@ -26,9 +26,10 @@ function useLoadingProps({ errorMessage, playerState }) {
 }
 
 function usePlayingProps(playerState) {
-  const { duration = 1 } = (playerState || {}) ;
+  const { paused, duration = 1 } = (playerState || {}) ;
   const { type } = getTrackInfo(playerState);
   const [currentPosition, setCurrentPosition] = useState(0);
+  const intervalDuration = paused ? null : currentPosition > 0 ? PLAYING_INTERVAL : 50;
 
   useEffect(() => {
     setCurrentPosition((playerState || {}).position || 0);
@@ -36,7 +37,7 @@ function usePlayingProps(playerState) {
 
   useInterval(() => {
     setCurrentPosition(Math.min(currentPosition + PLAYING_INTERVAL, duration));
-  }, currentPosition > 0 ? PLAYING_INTERVAL : 50);
+  }, intervalDuration);
 
   return {
     scale: currentPosition / duration,
