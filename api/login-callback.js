@@ -17,6 +17,6 @@ module.exports = async (req, res) => {
     },
     json: true
   });
-  res.writeHead(301, { Location: `https://mute-spotify-ads.now.sh?${qs.stringify({ refresh_token })}` });
+  res.writeHead(301, { Location: `https://mute-spotify-ads.chiaogu.now.sh?${qs.stringify({ refresh_token })}` });
   res.end();
 }
