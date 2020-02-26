@@ -1,14 +1,14 @@
 const util = require('util');
 const qs = require('querystring');
 const post =  util.promisify(require('request').post);
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } = require('./_constants');
+const { CLIENT_ID, CLIENT_SECRET } = require('./_constants');
 
 module.exports = async (req, res) => {
   const { body: { access_token, refresh_token } } = await post({
     url: 'https://accounts.spotify.com/api/token',
     form: {
       code: req.query.code || null,
-      redirect_uri: REDIRECT_URL,
+      redirect_uri: `https://${req.headers.host}/api/login-callback`,
       grant_type: 'authorization_code'
     },
     headers: {
@@ -17,6 +17,6 @@ module.exports = async (req, res) => {
     },
     json: true
   });
-  res.writeHead(301, { Location: `https://mute-spotify-ads.now.sh?${qs.stringify({ refresh_token })}` });
+  res.writeHead(301, { Location: `https://${req.headers.host}?${qs.stringify({ refresh_token })}` });
   res.end();
 }
