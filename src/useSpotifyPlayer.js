@@ -53,7 +53,7 @@ async function initSpotifyPlayer({ onStateChange, onError, onReady }) {
     if(type === 'ad') {
       if(previousTrackType !== type) volume = await player.getVolume();
       await player.setVolume(0);
-      changeMeta('favicon-block.ico', name);
+      changeMeta('favicon-mute.ico', name);
       gtag('event', 'block_ad', { value: name });
     } else {
       await player.setVolume(volume);
