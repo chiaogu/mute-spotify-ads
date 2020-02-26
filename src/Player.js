@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import LogoutButton from './LogoutButton';
-import { ReactComponent as BlockIcon } from './assets/icon-block.svg';
+import { ReactComponent as MuteIcon } from './assets/icon-mute.svg';
 import getTrackInfo from './getTrackInfo';
 
 export default function Player({ state }) {
@@ -52,7 +52,7 @@ const AlbumCoverImage = styled.div`
   `}
 `;
 
-const Icon = styled(BlockIcon)`
+const Icon = styled(MuteIcon)`
   width: 48px;
   height: 48px;
   z-index: 1;
